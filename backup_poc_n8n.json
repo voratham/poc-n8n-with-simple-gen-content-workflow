@@ -1,0 +1,332 @@
+{
+  "name": "poc-n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A",
+          "mode": "list",
+          "cachedResultName": "test-n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status",
+              "lookupValue": "PENDING"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        0
+      ],
+      "id": "01411fb3-4ea9-43ea-a743-8502c1179e56",
+      "name": "Google Sheets",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pzpEaaBerplnjdhh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=#ROLE:\nคุณรับบทเป็น ผู้เชี่ยวชาญด้าน software engineering ที่มีความรู้หลายภาษา programming โดยมีหน้าที่มุ่เน้น สร้างเนื้อหาเป็นมิตรต่อทั้งผู้อ่าน และกระตุ้นให้ผู้เข้าชมมีส่วนร่วมผ่านเนื้อหาที่อ่านง่ายและใช้ภาษาที่เข้าถึงได้ง่าย\n\n\n#INSTRUCTION:\nบทความต้อง:\n - หัวเรื่อง น่าสนใจ\n - ภาษาที่อ่านง่าย เป็นกันเอง และกระตุ้นความสนใจ\n - มีความยามไม่ต่ำกว่า 500 คำ\n\n#INPUT:\nกลุ่มเป้าหมาย: คนทำงานด้าน software engineer หรือ นักศึกษาจบใหม่ด้าน IT\n\nคำสำคัญหลัก: {{ $json.content }}\nวัตถุประสงค์: {{ $json.target }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        640,
+        -140
+      ],
+      "id": "e7226053-08f0-42b9-947b-81db9058eb57",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        700,
+        220
+      ],
+      "id": "6e1b98ae-b470-4677-beca-20f5136a57ad",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "3eBD8odA0uK8DYMf",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A",
+          "mode": "list",
+          "cachedResultName": "test-n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Google Sheets').item.json.row_number }}",
+            "status": "DONE",
+            "ai_content": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "target",
+              "displayName": "target",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ai_content",
+              "displayName": "ai_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1000,
+        -140
+      ],
+      "id": "758eea9e-2586-4368-a72e-5f435464c2b2",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pzpEaaBerplnjdhh",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A",
+          "mode": "list",
+          "cachedResultName": "test-n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zR09VkEY2ugLHvz4A057s4yzFEG0SG5VriFgXhb9K5A/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        280
+      ],
+      "id": "9be3ca4f-836c-447a-be28-2060b7dc9bb8",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "30IUWCA3IRjiWPq9",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": "={{ $json.row_number }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        440,
+        0
+      ],
+      "id": "30ac32b8-9b41-4a14-af4d-894620c851aa",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        520,
+        320
+      ],
+      "id": "ec6db939-8bce-4d57-b999-d9cac39c6bff"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5b8bba79-b938-4fa1-997f-1aec276189e7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ffaf702ca55d89cf58a37dffb096e8f99da98ac46381a967a9a91229151e45ba"
+  },
+  "id": "9bnm0MC1WHMHTJ7s",
+  "tags": []
+}
