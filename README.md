@@ -1,17 +1,17 @@
-The repo is test n8n workflow simple with docker + ollama + llama:3.2:3B model
+# The repo is test n8n workflow simple with docker + ollama + llama:3.2:3B model
 
-Prerequisite
+### Prerequisite
 - Docker
-- Ollama
-- Ollama Llama:3.2:3B model
+- Ollama and pull Llama:3.2:3B model
 - Google account for enable google-sheet-api, google-drive-api
 
 
+## NOTE
 - backup_poc_n8n.json is workflow generate content by using ollama llama:3.2:3B model for test
 - You will using gmail account for enable google-sheet-api, google-drive-api
 
 
-## Docker clik run n8n
+## Docker cli run n8n
 ```sh
 docker run -it --rm \
  --name n8n \
